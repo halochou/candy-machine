@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Puzzle for Candy</title>
+    <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1, minimum-scale=1,maximum-scale=1,target-densitydpi=device-dpi" />
+    <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <!-- force webkit on 360 -->
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <!-- force edge on IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- force full screen on some browser -->
+    <meta name="full-screen" content="yes" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="360-fullscreen" content="true" />
+    <!-- force screen orientation on some browser -->
+    <!-- portrait - 竖屏 landscape - 横屏 -->
+    <meta name="screen-orientation" content="landscape" />
+    <meta name="x5-orientation" content="landscape">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta http-equiv="Cache-control" content="public, max-age=5">
+    <style type="text/css">
+        body{
+            padding: 0;
+            margin: 0;
+            background: #fff;
+        }
+    </style>
+
+<!--     <script>
+      // add a global error event listener early on in the page load, to help ensure that browsers
+      // which don't support specific functionality still end up displaying a meaningful message.
+      window.addeventlistener('error', function(error) {
+        if (chromesamples && chromesamples.setstatus) {
+          console.error(error);
+          chromesamples.setstatus(error.message + ' (your browser may not support this feature.)');
+          error.preventdefault();
+        }
+      });
+    </script>
+ -->
+</head>
+
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+
+<body>
+    <div id="container"></div>
+    <script src="./phaser.min.js"></script>
+    <script src="./js/main.js"></script>
+<script>
+  var ChromeSamples = {
+    log: function() {
+      var line = Array.prototype.slice.call(arguments).map(function(argument) {
+        return typeof argument === 'string' ? argument : JSON.stringify(argument);
+      }).join(' ');
+
+      document.querySelector('#log').textContent += line + '\n';
+    },
+
+    clearLog: function() {
+      document.querySelector('#log').textContent = '';
+    },
+
+    setStatus: function(status) {
+      document.querySelector('#status').textContent = status;
+    },
+
+    setContent: function(newContent) {
+      var content = document.querySelector('#content');
+      while(content.hasChildNodes()) {
+        content.removeChild(content.lastChild);
+      }
+      content.appendChild(newContent);
+    }
+  };
+</script>
+
+<form>
+<!--   <label for="allDevices">All Devices</label>
+  <input id="allDevices" type="checkbox">
+  <input id="service" type="text" size=17 list="services" placeholder="Bluetooth Service">
+  <input id="name" type="text" size=17 placeholder="Device Name">
+  <input id="namePrefix" type="text" size=17 placeholder="Device Name Prefix">
+ -->  <button>Pair</button>
+</form>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    onButtonClick();
+
+    // if (isWebBluetoothEnabled()) {
+      // ChromeSamples.clearLog();
+    // }
+  });
+</script>
+
+<!-- <script>
+  // log = ChromeSamples.log;
+
+  function isWebBluetoothEnabled() {
+    if (navigator.bluetooth) {
+      return true;
+    } else {
+      // ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
+          // 'Please make sure the "Experimental Web Platform features" flag is enabled.');
+      return false;
+    }
+  }
+</script>
+ -->
+<script>function onButtonClick() {
+  game.paused = true;
+  ble = pair();
+  game.paused = false;
+  // let serviceUuid = document.querySelector('#service').value;
+  // if (serviceUuid.startsWith('0x')) {
+  //   serviceUuid = parseInt(serviceUuid);
+  // }
+
+  // let characteristicUuid = document.querySelector('#characteristic').value;
+  // if (characteristicUuid.startsWith('0x')) {
+  //   characteristicUuid = parseInt(characteristicUuid);
+  // }
+
+  // log('Requesting any Bluetooth Device...');
+  // navigator.bluetooth.requestDevice({
+  //  // filters: [...] <- Prefer filters to save energy & show relevant devices.
+  //     acceptAllDevices: true,
+  //     optionalServices: [serviceUuid]})
+  // .then(device => {
+  //   log('Connecting to GATT Server...');
+  //   return device.gatt.connect();
+  // })
+  // .then(server => {
+  //   log('Getting Service...');
+  //   return server.getPrimaryService(serviceUuid);
+  // })
+  // .then(service => {
+  //   log('Getting Characteristic...');
+  //   return service.getCharacteristic(characteristicUuid);
+  // })
+  // .then(characteristic => {
+  //   log('Getting Descriptor...');
+  //   return characteristic.getDescriptor('gatt.characteristic_user_description');
+  // })
+  // .then(descriptor => {
+  //   document.querySelector('#writeButton').disabled =
+  //       !descriptor.characteristic.properties.write;
+  //   myDescriptor = descriptor;
+  //   log('Reading Descriptor...');
+  //   return descriptor.readValue();
+  // })
+  // .then(value => {
+  //   let decoder = new TextDecoder('utf-8');
+  //   log('> Characteristic User Description: ' + decoder.decode(value));
+  // })
+  // .catch(error => {
+  //   document.querySelector('#writeButton').disabled = true;
+  //   log('Argh! ' + error);
+  // });
+// }
+
+}
+</script>
+  
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
+
+<script type="text/javascript">
+function pair(){
+  navigator.bluetooth.requestDevice({
+    // filters: [{ namePrefix: [0x0228] }]
+    filters: [
+      { namePrefix: ['Candy'] }
+      ],
+    optionalServices: ['86000990-4e7a-4441-b9f9-e3e4b18f38ed']
+  })
+  .then(function(device) {
+    // Step 2: Connect to it
+    console.log('device', device.uuid);
+    return device.gatt.connect();
+  })
+  .then(function(server) {
+    // Step 3: Get the Service via UUID
+    console.log('server', server);
+    return server.getPrimaryService('86000990-4e7a-4441-b9f9-e3e4b18f38ed');
+  })
+  .then(function(service) {
+    console.log('service', service.uuid);
+    // Step 4: get the Characteristic UUID
+    return service.getCharacteristic('86000990-4e7a-4441-b9f9-e3e4b18f38ed');
+  })
+  .then(function(characteristic) {
+    // Step 5: Write to the characteristic
+    console.log('char', characteristic.properties.notify);
+    game.state.ble = characteristic;
+    return characteristic;
+  })
+  .catch(function(error) {
+     // And of course: error handling!
+     console.error('Connection failed!', error);
+  });
+}
+function redeem(characteristic) {
+    console.log(characteristic);
+    var data = new Uint8Array([0x8b, 0x1f, 0x02, 0x1c, 0x03]);
+    characteristic.writeValue(data);
+    console.log('signal written');
+    // characteristic.startNotifications().then(_ => {
+    //   console.log('> Notifications started');
+    //   characteristic.addEventListener('characteristicvaluechanged',
+    //       handleNotifications);
+    // });
+}
+
+function handleNotifications(event) {
+  let value = event.target.value;
+  let a = [];
+  // Convert raw data bytes to hex values just for the sake of showing something.
+  // In the "real" world, you'd use data.getUint8, data.getUint16 or even
+  // TextDecoder to process raw data bytes.
+  for (let i = 0; i < value.byteLength; i++) {
+    a.push('0x' + ('00' + value.getUint8(i).toString(16)).slice(-2));
+  }
+  console.log('> ' + a.join(' '));
+  ChromeSamples.log('Recv');
+}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<style type="text/css">
+		body{
+			background: #000000;
+			padding:0px;
+			margin:0px;
+		}
+	</style>
+    <script src = "ble.js"></script>
+	<script src="phaser.min.js"></script>
+    <script src = "game.js"></script>
+    <meta http-equiv="Cache-control" content="public, max-age=5">
+	</head>
+	<body>
+		<div id ="container"></div>
+		<div id ="pair">Pair</div>
+	</body>
+	<script type="text/javascript">
+		state = {};
+		onClick = function (e) {
+			ble = pair("Candy");
+			console.log('click');
+		}
+		document.body.querySelector("#pair").addEventListener("touchend", onClick);
+		document.body.querySelector("#pair").addEventListener("click", onClick);
+	</script>
+</html>
